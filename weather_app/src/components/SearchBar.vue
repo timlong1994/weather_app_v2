@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import ResultService from '@/services/ResultService.js'
-import Result from '@/components/Result.vue'
+defineEmits(['location'])
 
-const emit = defineEmits(['location'])
+const search = ""
+
 </script>
 
 <template>
-    <form id="get_location" @submit.prevent="ResultService.getWeather()">
-        <input type="text" class="search" id="search_bar" name="q" placeholder="location" onsubmit="returnSearchResult()">
-        <input type="image" id="submit">
+    <form id="get_location" @submit.prevent="$emit('location', search)">
+        <input v-model="search" type="text" class="search" id="search_bar" placeholder="location">
+        <input type="submit" id="submit" value=&#x1F50D;>
     </form>
 </template>
 
@@ -20,7 +20,7 @@ form {
     flex-direction: row;
     column-gap: 10px;
     flex-basis: auto; 
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     align-content: center;
     align-self: center;
@@ -56,13 +56,11 @@ form {
 #submit {
     border-style: solid;
     border-radius: 0px 15px 15px 0px;
-    background-image: url('@/assets/search.png');
     background-color: #b197fc;
     border-color: #b197fc;
     border-width: 10px;
-    height: 30px;
-    width: auto;
-    object-fit: cover;
+    height: 50px;
+    width: 50px;
 }
 
 #submit:hover {
@@ -101,7 +99,8 @@ form {
     }
 
     #submit {
-        height: 40px;
+        height: 60px;
+        width: 75px;
     }
 }
 
