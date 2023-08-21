@@ -2,18 +2,19 @@
 import type { Weather } from '../types'
 
 defineProps<{
-    weather: Weather
+    weather: Weather | boolean
 }>()
+
 </script>
 
 <template>
-    <section class="search_result">
+    <section class="search_result" v-if="weather">
         <h1 id="country">{{ weather.location.country}}</h1>
-        <p id="location">{{ weather.location.name}}</p>
-        <p id="temperature">{{ weather.current.temp_c}}°</p>
-        <p id="feels_like">Feels like: {{ weather.current.feelslike_c}}°</p>
-        <img id="weather_icon" :src="weather.current.condition.icon">
-        <p id="forecast">{{ weather.current.condition.text}}</p>
+        <p id="location">{{ weather?.location.name}}</p>
+        <p id="temperature">{{ weather?.current.temp_c}}°</p>
+        <p id="feels_like">Feels like: {{ weather?.current.feelslike_c}}°</p>
+        <img id="weather_icon" :src="weather?.current.condition.icon">
+        <p id="forecast">{{ weather?.current.condition.text}}</p>
     </section>
 </template>
 
