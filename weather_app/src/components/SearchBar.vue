@@ -1,7 +1,12 @@
 <script setup lang="ts">
-defineEmits(['location'])
+import { ref } from "vue"
 
-const search = ""
+defineEmits<{
+    location: [payload: string]
+}>()
+
+
+const search: Ref<string> = ref("")
 
 </script>
 
