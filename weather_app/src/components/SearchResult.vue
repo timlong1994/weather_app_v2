@@ -2,14 +2,14 @@
 import type { Weather } from '../types'
 
 defineProps<{
-    weather: Weather | boolean
+    weather: Weather | null
 }>()
 
 </script>
 
 <template>
-    <section class="search_result" v-if="weather">
-        <h1 id="country">{{ weather.location.country}}</h1>
+    <section class="search_result">
+        <h1 id="country">{{ weather?.location.country}}</h1>
         <p id="location">{{ weather?.location.name}}</p>
         <p id="temperature">{{ weather?.current.temp_c}}°</p>
         <p id="feels_like">Feels like: {{ weather?.current.feelslike_c}}°</p>
