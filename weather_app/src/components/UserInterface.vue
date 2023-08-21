@@ -4,33 +4,33 @@ import { ref } from "vue"
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import SearchResult from '@/components/SearchResult.vue'
-import ResultService from '@/services/ResultService'
+import ResultService from '../services/ResultService'
 
-const results = ref()
-const errorMessage = ref()
+import type { AxiosResponse } from 'axios'
+import type { Ref } from "vue"
 
-interface Response {
-    data: JSON
-}
+import type { Weather } from '../types'
 
-function search(location: string) {
-    ResultService.getWeather(location)
-        .then((response: Response) => {
-            results.value = response.data
-            errorMessage.value = false
-        })
-        .catch((error: Error) => {
-            results.value = false
-            errorMessage.value = true
-            console.log(error)
-    })
+const results: Ref<Weather | null> = ref(null)
+const errorMessage: Ref<boolean> = ref(false)
+
+async function searched(location: string) {
+    try {
+        const response: AxiosResponse = await ResultService.getWeather(location)
+        results.value = response.data
+        errorMessage.value = false
+    } catch (error) {
+        results.value = null
+        errorMessage.value = true
+        console.log(error)
+    }
 }
 </script>
 
 <template>
     <h2>How's the weather?</h2>
-    <SearchBar @location="(n) => search(n)"/>
-    <SearchResult v-if="results" :weather="results"/>
+    <SearchBar @location="searched" />
+    <SearchResult v-if="results" :weather="results" />
     <ErrorMessage v-if="errorMessage" />
 </template> 
 
