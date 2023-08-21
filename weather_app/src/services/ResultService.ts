@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import type { AxiosInstance } from 'axios'
+import type { AxiosInstance, AxiosResponse } from 'axios'
 
 const apiClient: AxiosInstance = axios.create({
     baseURL: 'http://api.weatherapi.com/v1/current.json?key=1c5a98bf8b524cf5bb3185319230507&q=',
@@ -11,7 +11,7 @@ const apiClient: AxiosInstance = axios.create({
 })
 
 export default {
-    getWeather(location: string) {
+    getWeather(location: string): Promise<AxiosResponse> {
         return apiClient.get(location)
     }
 }
