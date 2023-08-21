@@ -1,12 +1,3 @@
-export interface AxiosResponse{
-    data: Weather;
-    status: number;
-    statusText: string;
-    headers?: any;
-    config?: any;
-    request?: any;
-}
-
 export interface Weather {
     location: Location;
     current: Current;
