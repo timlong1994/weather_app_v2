@@ -6,7 +6,6 @@ import SearchBar from '@/components/SearchBar.vue'
 import SearchResult from '@/components/SearchResult.vue'
 import ResultService from '../services/ResultService'
 
-import type { AxiosResponse } from 'axios'
 import type { Ref } from "vue"
 
 import type { Weather } from '../types'
@@ -14,9 +13,9 @@ import type { Weather } from '../types'
 const results: Ref<Weather | null> = ref(null)
 const errorMessage: Ref<boolean> = ref(false)
 
-async function searched(location: string) {
+async function searched(location: string): Promise<void> {
     try {
-        const response: AxiosResponse = await ResultService.getWeather(location)
+        const response = await ResultService.getWeather(location)
         results.value = response.data
         errorMessage.value = false
     } catch (error) {
