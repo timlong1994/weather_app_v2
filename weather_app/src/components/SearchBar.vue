@@ -1,20 +1,29 @@
 <script setup lang="ts">
 import { ref } from "vue"
 
+import ErrorMessage from '@/components/ErrorMessage.vue'
+
+import type { Ref } from "vue"
+
 defineEmits<{
-    location: [payload: string]
+    input: [payload: string]
 }>()
 
+defineProps<{
+    message: String | null
+}>()
 
-const search: Ref<string> = ref("")
+const location: Ref<string> = ref("")
 
 </script>
 
 <template>
-    <form id="get_location" @submit.prevent="$emit('location', search)">
-        <input v-model="search" type="text" class="search" id="search_bar" placeholder="location">
+    <form id="get_location" @submit.prevent="$emit('input', location)">
+        <input v-model="location" type="text" class="search" id="search_bar" placeholder="location">
         <input type="submit" id="submit" value=&#x1F50D;>
     </form>
+
+    <ErrorMessage :errorMessage="message"/>
 </template>
 
 

@@ -1,9 +1,12 @@
 <script setup lang="ts">
-
+defineProps<{
+    errorMessage: String | null
+}>()
 </script>
 
+
 <template>
-    <p id="error_message">Please enter a valid location</p>
+    <p id="error_message">{{ errorMessage }}</p>
 </template>
 
 <style scoped>

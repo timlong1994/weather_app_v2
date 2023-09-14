@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import UserInterface from '@/components/UserInterface.vue'
+import HomeView from '@/views/HomeView.vue'
 </script>
 
 <template>
   <main>
-    <UserInterface />
+    <HomeView />
   </main>
 </template>
 
