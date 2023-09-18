@@ -22,6 +22,9 @@ async function getWeather(location: string): Promise<void> {
             case 'InvalidLocation':
                 errorMessage.value = 'Please enter a valid location'
                 break
+            case 'MissingParameter':
+                errorMessage.value = 'Please enter a location'
+                break
             default:
                 errorMessage.value = 'Something went wrong, please try again later'
         }
