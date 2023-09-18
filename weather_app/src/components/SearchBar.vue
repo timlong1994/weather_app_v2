@@ -10,7 +10,7 @@ defineEmits<{
 }>()
 
 defineProps<{
-    message: String | null
+    message: String
 }>()
 
 const location: Ref<string> = ref("")
@@ -23,7 +23,7 @@ const location: Ref<string> = ref("")
         <input type="submit" id="submit" value=&#x1F50D;>
     </form>
 
-    <ErrorMessage :errorMessage="message"/>
+    <ErrorMessage v-if="message !== ''" :errorMessage="message"/>
 </template>
 
 
