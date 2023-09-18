@@ -4,73 +4,85 @@ import type { AxiosInstance, AxiosError } from 'axios'
 
 import type { Weather } from '../types'
 
-type ServerError = { errorMessage: string }
-
-const ErrorStatus = {
-    APIKeyNotProvided: 1002,
-    ParameterNotProvided: 1003,
-    InvalidAPIRequest: 1005,
-    NoMatchingLocationFound: 1006,
-    InvalidAPIKey: 2006,
+class InvalidLocation extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'InvalidLocation'
+  }
 }
 
-class InvalidLocationError extends Error {
-    constructor(message: string) {
-        super(message);
-        this.name = "InvalidLocationError";
-    }
+class MissingAPIKey extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'MissingAPIKey'
+  }
 }
 
-class MissingAPIKeyError extends Error {
-    constructor(message: string) {
-        super(message);
-        this.name = "MissingAPIKeyError";
-    }
+class InvalidAPIRequest extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'InvalidAPIRequest'
+  }
+}
+
+class MissingParameter extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'MissingParameter'
+  }
+}
+
+class InvalidAPIKey extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'InvalidAPIKey'
+  }
+}
+
+class UndefinedErrorCode extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'UndefinedErrorCode'
+  }
 }
 
 function isAxiosError(candidate: unknown): candidate is AxiosError {
-    if (candidate && typeof candidate === 'object' && 'isAxiosError' in candidate) {
-      return true;
-    }
-    return false;
-  }
-  
+  return Boolean(candidate && typeof candidate === 'object' && 'isAxiosError' in candidate)
+}
 
 const apiClient: AxiosInstance = axios.create({
-    baseURL: 'http://api.weatherapi.com/v1/current.json?key=1c5a98bf8b524cf5bb3185319230507&q=',
-    headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
+  baseURL: 'http://api.weatherapi.com/v1/current.json?key=1c5a98bf8b524cf5bb3185319230507&q=',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  }
 })
 
 export default {
-    async getWeather(location: string): Promise<Weather| void> {
-        try {
-        const response = await apiClient.get(location)
-        const weather = response.data
-        return weather
-        } catch(error: unknown) {
-            if (isAxiosError(error)) {
-                const message = error as AxiosError<any>
+  async getWeather(location: string): Promise<Weather> {
+    try {
+      const { data } = await apiClient.get(location)
 
-                if (message.response) {
-                    const errorCode = message.response.data.error.code
-                
-                    switch (errorCode) {
-                        case ErrorStatus.APIKeyNotProvided:
-                            throw MissingAPIKeyError
-                        case ErrorStatus.ParameterNotProvided:
-                            break;
-                        case ErrorStatus.InvalidAPIRequest:
-                            throw InvalidLocationError
-                        case ErrorStatus.NoMatchingLocationFound:
-                            throw InvalidLocationError
-                        case ErrorStatus.InvalidAPIKey:
-                            break;
-                    }
-                }
-            }
-        }
+      return data
+    } catch (error: unknown) {
+      if (!isAxiosError(error)) {
+        throw error
+      }
+
+      switch ((error as AxiosError<any>).response?.data.error.code) {
+        case 1002:
+          throw MissingAPIKey
+        case 1003:
+          throw MissingParameter
+        case 1005:
+          throw InvalidAPIRequest
+        case 1006:
+          throw InvalidLocation
+        case 2006:
+          throw InvalidAPIKey
+        default:
+          throw UndefinedErrorCode
+      }
     }
+  }
 }
