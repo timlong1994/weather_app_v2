@@ -1,3 +1,12 @@
+export interface SearchResult {
+    country: string;
+    location: string;
+    temperature: number;
+    feelslike_c: number;
+    icon: string;
+    condition: string;
+}
+
 export interface Weather {
     location: Location;
     current: Current;
