@@ -2,7 +2,7 @@
 import type { Weather } from '../types'
 
 defineProps<{
-    weather: Weather | null | void
+    weather: Weather | null
 }>()
 </script>
 
