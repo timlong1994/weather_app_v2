@@ -3,40 +3,27 @@ import { ref } from 'vue'
 
 import SearchBar from '../components/SearchBar.vue'
 import SearchResult from '../components/SearchResult.vue'
-import ResultService from '../services/ResultService'
+import { useAxios } from '../composables/useAxios'
 
 import type { Ref } from 'vue'
 
-import type { Weather } from '../types'
+import type { Results } from '../types'
 
-const results: Ref<Weather | null> = ref(null)
+const forecast: Ref<Results | null> = ref(null)
 const errorMessage: Ref<String> = ref('')
 
-async function getWeather(location: string): Promise<void> {
-    try {
-        const response = await ResultService.getWeather(location)
-        results.value = response
-        errorMessage.value = ''
-    } catch (error: unknown) {
-        switch ((error as Error).name) {
-            case 'InvalidLocation':
-                errorMessage.value = 'Please enter a valid location'
-                break
-            case 'MissingParameter':
-                errorMessage.value = 'Please enter a location'
-                break
-            default:
-                errorMessage.value = 'Something went wrong, please try again later'
-        }
-        results.value = null
-    }
+async function getResults(location: string): Promise<void> {
+    const { data, error } = await useAxios(location)
+
+    forecast.value = data.value
+    errorMessage.value = error.value
 }
 </script>
 
 <template>
     <h2>How's the weather?</h2>
-    <SearchBar @input="getWeather" :message="errorMessage" />
-    <SearchResult :weather="results" />
+    <SearchBar @input="getResults" :errorMessage="errorMessage" />
+    <SearchResult :weather="forecast" />
 </template>
 
 <style scoped>
@@ -65,3 +52,4 @@ async function getWeather(location: string): Promise<void> {
     }
 }
 </style>
+../composables/useAxios
