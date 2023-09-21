@@ -1,31 +1,33 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref } from 'vue'
 
-import ErrorMessage from '@/components/ErrorMessage.vue'
-
-import type { Ref } from "vue"
+import type { Ref } from 'vue'
 
 defineEmits<{
     input: [payload: string]
 }>()
 
 defineProps<{
-    message: String
+    errorMessage: String
 }>()
 
-const location: Ref<string> = ref("")
-
+const location: Ref<string> = ref('')
 </script>
 
 <template>
     <form id="get_location" @submit.prevent="$emit('input', location)">
-        <input v-model="location" type="text" class="search" id="search_bar" placeholder="location">
-        <input type="submit" id="submit" value=&#x1F50D;>
+        <input
+            v-model="location"
+            type="text"
+            class="search"
+            id="search_bar"
+            placeholder="location"
+        />
+        <input type="submit" id="submit" value="&#x1F50D;" />
     </form>
 
-    <ErrorMessage v-if="message !== ''" :errorMessage="message"/>
+    <p id="error_message" v-if="errorMessage !== ''">{{ errorMessage }}</p>
 </template>
-
 
 <style scoped>
 form {
@@ -33,7 +35,7 @@ form {
     display: flex;
     flex-direction: row;
     column-gap: 10px;
-    flex-basis: auto; 
+    flex-basis: auto;
     justify-content: space-between;
     align-items: center;
     align-content: center;
@@ -59,11 +61,11 @@ form {
     padding-left: 10px;
 }
 
-#search_bar:focus{
+#search_bar:focus {
     outline: none;
 }
 
-#search_bar:focus::placeholder{
+#search_bar:focus::placeholder {
     color: transparent;
 }
 
@@ -86,6 +88,12 @@ form {
 #submit:active {
     background-color: #7048e8;
     border-color: #7048e8;
+}
+
+#error_message {
+    margin: 10px;
+    font-size: 18pt;
+    text-align: center;
 }
 
 /* Tablet Breakpoint */
@@ -139,6 +147,12 @@ form {
         width: 340px;
         padding-left: 20px;
         text-overflow: clip;
+    }
+
+    #error_message {
+        text-align: center;
+        grid-row: 2;
+        grid-column: 1/11;
     }
 }
 </style>
