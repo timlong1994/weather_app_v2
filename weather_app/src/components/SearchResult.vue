@@ -1,30 +1,30 @@
 <script setup lang="ts">
-import type { Weather } from '../types'
+import type { Results } from '../types'
 
 defineProps<{
-    weather: Weather | null
+    weather: Results | null
 }>()
 </script>
 
 <template>
     <section class="search_result" v-if="weather">
-        <h1 id="country">{{ weather.location.country}}</h1>
-        <p id="location">{{ weather.location.name}}</p>
-        <p id="temperature">{{ weather.current.temp_c}}°</p>
-        <p id="feels_like">Feels like: {{ weather.current.feelslike_c}}°</p>
-        <img id="weather_icon" :src="weather.current.condition.icon">
-        <p id="forecast">{{ weather.current.condition.text}}</p>
+        <h1 id="country">{{ weather.country }}</h1>
+        <p id="location">{{ weather.location }}</p>
+        <p id="temperature">{{ weather.temperature }}°</p>
+        <p id="feels_like">Feels like: {{ weather.feels_like }}°</p>
+        <img id="weather_icon" :src="weather.icon" />
+        <p id="forecast">{{ weather.condition }}</p>
     </section>
 </template>
 
 <style scoped>
 .modal {
-  position: fixed;
-  z-index: 999;
-  top: 20%;
-  left: 50%;
-  width: 300px;
-  margin-left: -150px;
+    position: fixed;
+    z-index: 999;
+    top: 20%;
+    left: 50%;
+    width: 300px;
+    margin-left: -150px;
 }
 .search_result {
     display: flex;
@@ -34,7 +34,7 @@ defineProps<{
 }
 
 #country {
-    text-transform:capitalize;
+    text-transform: capitalize;
     padding: 0;
     margin: 0 0 10px 0;
     font-size: 16pt;
@@ -102,18 +102,18 @@ defineProps<{
     #location {
         font-size: 28pt;
     }
-    
+
     #temperature {
         font-size: 80pt;
         font-weight: 100;
         margin: 0 0 0 45px;
     }
-    
+
     #weather_icon {
         width: 70px;
         image-resolution: 600dpi;
     }
-    
+
     #forecast {
         margin: 0px;
         font-size: 24pt;
@@ -142,11 +142,11 @@ defineProps<{
         display: grid;
         grid-template-columns: repeat(6, 1fr);
         grid-template-areas:
-            "e e e e e e"
-            "f f f f f f"
-            "c c c c c c"
-            "a a a b b b"
-            "a a a d d d";
+            'e e e e e e'
+            'f f f f f f'
+            'c c c c c c'
+            'a a a b b b'
+            'a a a d d d';
         width: 450px;
     }
 
@@ -190,7 +190,7 @@ defineProps<{
     #forecast {
         margin: 0 0 20px 0;
         grid-area: c;
-        font-size: 26pt;
+        font-size: 22pt;
         font-weight: 300;
         text-align: left;
     }
@@ -201,5 +201,4 @@ defineProps<{
         grid-column: 1/11;
     }
 }
-
 </style>
